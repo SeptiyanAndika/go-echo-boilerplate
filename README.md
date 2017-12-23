@@ -51,9 +51,10 @@ type LoginRequest struct {
 
 ```golang
 func (l *Logic) Login(params interface{}) (error, interface{}) {
-	paramater := params.(*LoginRequest)
-    user := UserSchema{}
+    paramater := params.(*LoginRequest)
     
+    .....
+    .....
     .....
 
 }
