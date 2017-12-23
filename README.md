@@ -26,10 +26,21 @@ RequestHandler in file `utils/request` will parsing, validate and excecute logic
 
 `err, result := utils.RequestHandler(c, new(LoginRequest), UserLogic.Login)`
 
-- `c`is context
+- `c` is context
 - `LoginRequest` is struct request paramater
 - `UserLogic.Login` is a functions logic
 
+```golang
+func Login(c echo.Context) error {
+
+	err, result := utils.RequestHandler(c, new(LoginRequest), UserLogic.Login)
+	if err != nil {
+		return utils.ErrorResponse(c, err)
+	}
+	return utils.SuccessResponse(c, result)
+
+}
+```
 
 ```golang
 type LoginRequest struct {
