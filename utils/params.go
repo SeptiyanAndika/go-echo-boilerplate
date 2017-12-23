@@ -7,7 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func ParsingParamter(ctx echo.Context, i interface{}, logsInfo ...string) error {
+func ParsingParamter(ctx echo.Context, i interface{}) error {
 	err := ctx.Bind(i)
 
 	log.WithFields(log.Fields{

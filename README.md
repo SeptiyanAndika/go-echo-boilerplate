@@ -18,3 +18,32 @@ Middleware Authorizer can support multiple roles, like in  in `modules/user/main
 2. e.GET("/restricted-user", restricted, utils.Authorizer("user")) // only roles  user can access
 3. e.GET("/restricted-admin", restricted, utils.Authorizer("admin")) // only roles admin can access
 3. e.GET("/restricted-user-admin", restricted, utils.Authorizer("admin", "user")) // roles admin and rols user can access
+
+
+### RequestHandler
+
+RequestHandler in file `utils/request` will parsing, validate and excecute logic functions
+
+`err, result := utils.RequestHandler(c, new(LoginRequest), UserLogic.Login)`
+
+- `c`is context
+- `LoginRequest` is struct request paramater
+- `UserLogic.Login` is a functions logic
+
+
+```golang
+type LoginRequest struct {
+	Email    string `json:"email" xml:"email" form:"email" query:"email" valid:"email,required"`
+	Password string `json:"password" xml:"password" form:"password" query:"password"  valid:"required,length(6|50)"`
+}
+```
+
+```golang
+func (l *Logic) Login(params interface{}) (error, interface{}) {
+	paramater := params.(*LoginRequest)
+    user := UserSchema{}
+    
+    .....
+
+}
+```

@@ -13,7 +13,7 @@ import (
 type (
 	LogicInterface interface {
 		Register(firstName, lastName, email, password string) (error, interface{})
-		Login(email, password string) (error, interface{})
+		Login(params interface{}) (error, interface{})
 		ForgotPassword(email string) (error, map[string]interface{})
 		Activated(token string) (error, map[string]interface{})
 	}
@@ -32,15 +32,15 @@ func (l *Logic) Register(firstName, lastName, email, password string) (error, in
 	return err, user
 }
 
-func (l *Logic) Login(email, password string) (error, interface{}) {
-
+func (l *Logic) Login(params interface{}) (error, interface{}) {
+	paramater := params.(*LoginRequest)
 	user := UserSchema{}
-	utils.GetInstanceDB().Db.Where("email = ?", email).First(&user)
+	utils.GetInstanceDB().Db.Where("email = ?", paramater.Email).First(&user)
 	if (UserSchema{}) == user {
 		return errors.New("user not found"), nil
 	}
 
-	if !l.checkPasswordHash(password, user.Password) {
+	if !l.checkPasswordHash(paramater.Password, user.Password) {
 		return errors.New("please check again username or password"), nil
 	}
 	token, err := l.createToken(user)
