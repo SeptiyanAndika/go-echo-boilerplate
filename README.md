@@ -14,11 +14,25 @@ Before you start, please make sure that you have install `glide` and start `mysq
 
 Middleware Authorizer can support multiple roles, like in  in `modules/user/main.go` 
 
-1. e.GET("/restricted", restricted, utils.Authorizer()) // all roles can acess
-2. e.GET("/restricted-user", restricted, utils.Authorizer("user")) // only roles  user can access
-3. e.GET("/restricted-admin", restricted, utils.Authorizer("admin")) // only roles admin can access
-3. e.GET("/restricted-user-admin", restricted, utils.Authorizer("admin", "user")) // roles admin and rols user can access
+1. All roles can acess
+```golang
+e.GET("/restricted", restricted, utils.Authorizer())
+```
 
+2. Only roles  user can access
+```golang
+e.GET("/restricted-user", restricted, utils.Authorizer("user"))
+```
+
+3. Only roles admin can access
+```golang
+e.GET("/restricted-admin", restricted, utils.Authorizer("admin"))
+```
+
+4. Roles admin and rols user can access
+```golang
+e.GET("/restricted-user-admin", restricted, utils.Authorizer("admin", "user"))
+```
 
 ### RequestHandler
 
