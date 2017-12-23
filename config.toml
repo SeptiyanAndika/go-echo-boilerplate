@@ -1,0 +1,10 @@
+[database]
+server = "127.0.0.1"
+port = "3306"
+database = "skeleton"
+user = "root"
+password = ""
+
+[app]
+name = "stater app"
+port = ":3000"
