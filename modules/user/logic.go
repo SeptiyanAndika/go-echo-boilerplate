@@ -6,6 +6,7 @@ import (
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/labstack/echo"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -13,7 +14,7 @@ import (
 type (
 	LogicInterface interface {
 		Register(firstName, lastName, email, password string) (error, interface{})
-		Login(params interface{}) (error, interface{})
+		Login(ctx echo.Context, params interface{}) (error, interface{})
 		ForgotPassword(email string) (error, map[string]interface{})
 		Activated(token string) (error, map[string]interface{})
 	}
@@ -32,7 +33,7 @@ func (l *Logic) Register(firstName, lastName, email, password string) (error, in
 	return err, user
 }
 
-func (l *Logic) Login(params interface{}) (error, interface{}) {
+func (l *Logic) Login(ctx echo.Context, params interface{}) (error, interface{}) {
 	paramater := params.(*LoginRequest)
 	user := UserSchema{}
 	utils.GetInstanceDB().Db.Where("email = ?", paramater.Email).First(&user)

@@ -1,4 +1,4 @@
-# go-echo-starter
+# go-echo-boilerplate
 Simple boilerplate modular using Echo Framework (Golang)
 
 ### HOW-TO
@@ -64,7 +64,7 @@ type LoginRequest struct {
 ```
 
 ```golang
-func (l *Logic) Login(params interface{}) (error, interface{}) {
+func (l *Logic) Login(ctx echo.Context, params interface{}) (error, interface{}) {
     paramater := params.(*LoginRequest)
     
     .....

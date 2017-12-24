@@ -4,7 +4,7 @@ import (
 	"github.com/labstack/echo"
 )
 
-type Logic func(i interface{}) (error, interface{})
+type Logic func(ctx echo.Context, i interface{}) (error, interface{})
 
 func RequestHandler(ctx echo.Context, i interface{}, logic Logic) (err error, result interface{}) {
 
@@ -15,6 +15,6 @@ func RequestHandler(ctx echo.Context, i interface{}, logic Logic) (err error, re
 	err = ValidateParamter(ctx, i)
 
 	// execute logic
-	err, result = logic(i)
+	err, result = logic(ctx, i)
 	return
 }
