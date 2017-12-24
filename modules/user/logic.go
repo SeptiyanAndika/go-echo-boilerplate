@@ -1,7 +1,6 @@
 package user
 
 import (
-	"boilerplate/utils"
 	"errors"
 	"time"
 
@@ -19,28 +18,28 @@ type (
 		Activated(token string) (error, map[string]interface{})
 	}
 	Logic struct {
+		userRepo UserRepositoryInterface
 	}
 )
 
-func NewLogic() LogicInterface {
-	return &Logic{}
+func NewLogic(userRepo UserRepositoryInterface) LogicInterface {
+	return &Logic{userRepo: userRepo}
 }
 
 func (l *Logic) Register(firstName, lastName, email, password string) (error, interface{}) {
 	hash, _ := l.hashPassword(password)
-	user := UserSchema{FirstName: firstName, LastName: lastName, Email: email, Password: hash, Roles: "user", IsActivated: true}
-	err := utils.GetInstanceDB().Db.Create(&user).Error
+	err, user := l.userRepo.Create(firstName, lastName, email, hash)
 	return err, user
 }
 
 func (l *Logic) Login(ctx echo.Context, params interface{}) (error, interface{}) {
 	paramater := params.(*LoginRequest)
 	user := UserSchema{}
-	utils.GetInstanceDB().Db.Where("email = ?", paramater.Email).First(&user)
-	if (UserSchema{}) == user {
-		return errors.New("user not found"), nil
+	var err error
+	err, user = l.userRepo.FindByEmail(paramater.Email)
+	if err != nil {
+		return err, nil
 	}
-
 	if !l.checkPasswordHash(paramater.Password, user.Password) {
 		return errors.New("please check again username or password"), nil
 	}
